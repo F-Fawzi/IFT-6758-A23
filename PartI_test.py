@@ -10,9 +10,7 @@ class NHLPBPDownloader:
     
     def download_season_data(self, season):
         # Vérifiez si les données existent localement
-        season_file = os.path.join(self.data_dir, f"nhl_data_{season}.json")
-        print(season_file)
-        # Créez un DataFrame vide pour stocker vos données
+        season_file = os.path.join(self.data_dir, f"nhl_data_{season}.json")        
         if os.path.exists(season_file):
             # Si les données existent, chargez-les depuis le fichier
             with open(season_file, "r") as json_file:
@@ -37,27 +35,25 @@ class NHLPBPDownloader:
                 play_by_play_url = f"{self.base_url}/game/{game_id}/feed/live/"
                 response = requests.get(play_by_play_url)
                 play_by_play_data = response.json()
-                play_by_play_data["SeasonType"] = "Regular Season"
-                df2=pd.DataFrame.from_dict(play_by_play_data)
-                # Ajoutez les données du jeu au DataFrame principal
-            
+            # Definir le path du fichier json pour enregistrer Data
+            game_file = os.path.join(self.data_dir, f"nhl_game_{game_id}.json")
+            # Enregistrer Data dans json spécifique pour la saison réguliere
+            with open(game_file, "w") as json_file:
+                json.dump(play_by_play_data, json_file, indent=4)
+
             # Récupération des données de saison éliminatoire
             for game in schedule_eliminatoire_data["dates"]:
                 game_id = game["games"][0]["gamePk"]
                 play_by_play_url = f"{self.base_url}/game/{game_id}/feed/live/"
                 response = requests.get(play_by_play_url)
                 play_by_play_data = response.json()
-                play_by_play_data["SeasonType"] = "Playoff"
-                df1=pd.DataFrame.from_dict(play_by_play_data)
-                
-                # Ajoutez les données du jeu au DataFrame principal
-
-            # Enregistrez les données dans le fichier local
+            # Definir le path du fichier json pour enregistrer Data
+            game_file = os.path.join(self.data_dir, f"nhl_game_{game_id}.json")
+            # Enregistrer Data dans json spécifique pour la saison éliminatoire
+            with open(game_file, "w") as json_file:
+                   json.dump(play_by_play_data, json_file, indent=4)
        
-        df=pd.concat([df2,df1])
-        df.to_json(season_file, orient='records')
-
-        return df
+        return 
 
 if __name__ == "__main__":
     data_dir = "nhl_data"  # Répertoire de stockage des données
