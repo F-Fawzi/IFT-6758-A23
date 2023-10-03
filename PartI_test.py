@@ -60,5 +60,5 @@ if __name__ == "__main__":
     downloader = NHLPBPDownloader(data_dir)
     
     # Téléchargez les données pour la saison 2016-17
-    season_data = downloader.download_season_data("20162017")
+    season_data = downloader.download_season_data("20172018")
     
