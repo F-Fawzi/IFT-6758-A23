@@ -1,0 +1,6 @@
+setup.py
+Project_IFT6758.egg-info/PKG-INFO
+Project_IFT6758.egg-info/SOURCES.txt
+Project_IFT6758.egg-info/dependency_links.txt
+Project_IFT6758.egg-info/requires.txt
+Project_IFT6758.egg-info/top_level.txt
