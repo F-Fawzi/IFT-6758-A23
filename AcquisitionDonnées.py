@@ -35,7 +35,11 @@ class NHLPBPDownloader:
                 for game_info in game_date["games"]:
                     game_id = game_info["gamePk"]
                     play_by_play_url = f"{self.base_url}/game/{game_id}/feed/live/"
-                    response = requests.get(play_by_play_url)
+                    try:
+                        response = requests.get(play_by_play_url)
+                        response.raise_for_status()
+                    except requests.exceptions.HTTPError as err:
+                        raise SystemExit(err)
                     play_by_play_data = response.json()
                     season = str(game_info["season"])  # Convert season to a string
                     # Define the directory path for the season
