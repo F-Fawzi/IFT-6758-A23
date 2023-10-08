@@ -7,52 +7,80 @@ from pandas import json_normalize
 # Define a regular expression pattern to match filenames
 
 # Initialize an empty DataFrame to store the combined data
-combined_df = pd.DataFrame()
 
 allplays_path=['liveData', 'plays', 'allPlays']
+players_path=['liveData', 'plays', 'allPlays', 'players']
 
-def fetch_data(year_dir): 
+
+def fetch_data(year_folders): 
+
+    combined_df = pd.DataFrame()
     # Iterate through the files in the directory
+    for season in os.listdir(year_folders): 
+        season=os.path.join(year_folders, season)
+        if season.endswith('.DS_Store'):
 
-    for filename in os.listdir(year_dir):
+            os.remove(season)
+            print(f'this {season} has been deleted')
 
-        if filename.endswith('.json'):
+        for filename in os.listdir(season):
+            print(filename)
+            if filename.endswith('.json'):
 
-            game_ID=filename.rsplit('.json')[0]
-
-
-            print(game_ID[-10:]) 
-
-            # Construct the full path to the JSON file
-            json_path = os.path.join(year_dir, filename)
-            
-            # Read the JSON file and directly convert it to a DataFrame
-            with open(json_path, 'r') as file:
-                json_data = json.load(file)
-                    # Extract the data from the desired nested dictionary
-            nested_data = json_data
-            for key in allplays_path:
-                nested_data = nested_data.get(key, {})
-            
-            for play in nested_data: 
-                if play["result"]["eventTypeId"] is "SHOT" or "GOAL":
-                    print(play["result"]["eventTypeId"])
-                    df=json_normalize(play)
-                    # Concatenate the current DataFrame with the combined DataFrame
-                    combined_df = pd.concat([combined_df, df], ignore_index=True)
+                game_ID=filename.rsplit('.json')[0]
+                game_ID=game_ID[-10:]
+                if game_ID[-6:-4]== '02':
+                    game_type= 'regular'
+                if game_ID[-6:-4]== '03':
+                    game_type= 'playoffs'
 
                 
-            # Add an additional column with the matched string
-            df['ID_game'] = game_ID
 
+                # Construct the full path to the JSON file
+                json_path = os.path.join(season, filename)
+                
+                # Read the JSON file and directly convert it to a DataFrame
+                with open(json_path, 'r') as file:
+                    json_data = json.load(file)
+                        # Extract the data from the desired nested dictionary
+                nested_data = json_data
+                for key in allplays_path:
+                    nested_data = nested_data.get(key, {})
+                
+                
+                for play in nested_data:
+                    #print(play)
+                    try :
+                        scorer=play["players"][0]
+                        goalie=play["players"][-1]
+                        scorer=json_normalize(scorer)
+                        scorer=scorer.add_suffix('_Scorer')
+                        goalie=json_normalize(goalie)
+                        goalie=goalie.add_suffix('_goalie')
+                        player_col=pd.concat([scorer,goalie], axis=1)
+                        ##print(player_col.columns)
+                        if play["result"]["eventTypeId"]=="SHOT" or play["result"]["eventTypeId"]=="GOAL":
 
-        # Now 'combined_df' contains your data from all matching JSON files in a single Pandas DataFrame
+                            #print(play["result"]["eventTypeId"])
+
+                            df=json_normalize(play)
+                            df=pd.concat([player_col,df], axis=1)
+                            df['ID_game'] = game_ID
+                            df['Game_type']= game_type
+
+                            # Concatenate the current DataFrame with the combined DataFrame
+                            combined_df = pd.concat([combined_df, df])
+
+                    except Exception as e: 
+                        continue
+
+    # Now 'combined_df' contains your data from all matching JSON files in a single Pandas DataFrame
+    combined_df=combined_df[["about.period","about.dateTime","team.name","result.eventTypeId","coordinates.x","coordinates.y","result.secondaryType","result.emptyNet","result.strength.name","player.fullName_Scorer","player.fullName_goalie","ID_game","Game_type"]]
+    combined_df.to_csv(f"{2016}.csv")
 
 if __name__ == "__main__":
 
-    year_dir = "test_data" # Répertoire de stockage des données
-    fetch_data(year_dir) 
+    year_dir = "nhl_data" # Répertoire de stockage des données
 
+    fetch_data(year_dir)
 
-    start_year = 2016
-    end_year = 2021
