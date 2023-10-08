@@ -12,11 +12,13 @@ allplays_path=['liveData', 'plays', 'allPlays']
 players_path=['liveData', 'plays', 'allPlays', 'players']
 
 
-def fetch_data(year_folders): 
+
+def fetch_data(year_folders, start_year, end_year): 
 
     combined_df = pd.DataFrame()
     # Iterate through the files in the directory
     for season in os.listdir(year_folders): 
+        start_year+=1
         season=os.path.join(year_folders, season)
         if season.endswith('.DS_Store'):
 
@@ -76,11 +78,11 @@ def fetch_data(year_folders):
 
     # Now 'combined_df' contains your data from all matching JSON files in a single Pandas DataFrame
     combined_df=combined_df[["about.period","about.dateTime","team.name","result.eventTypeId","coordinates.x","coordinates.y","result.secondaryType","result.emptyNet","result.strength.name","player.fullName_Scorer","player.fullName_goalie","ID_game","Game_type"]]
-    combined_df.to_csv(f"{2016}.csv")
+    combined_df.to_csv(f"{start_year}.csv")
 
 if __name__ == "__main__":
 
     year_dir = "nhl_data" # Répertoire de stockage des données
 
-    fetch_data(year_dir)
+    fetch_data(year_dir, start_year=2016, end_year=2021)
 
