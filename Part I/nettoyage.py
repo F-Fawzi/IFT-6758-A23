@@ -13,7 +13,7 @@ players_path=['liveData', 'plays', 'allPlays', 'players']
 
 
 
-def fetch_data(year_folders, start_year, end_year): 
+def clean_data(year_folders, start_year, end_year): 
     start_year-=1
     combined_df = pd.DataFrame()
     # Iterate through the files in the directory
@@ -85,5 +85,5 @@ if __name__ == "__main__":
 
     year_dir = "/Users/ceciliaacosta/Desktop/nhl_data" # Répertoire de stockage des données
 
-    fetch_data(year_dir, start_year=2016, end_year=2021)
+    clean_data(year_dir, start_year=2016, end_year=2021)
 
