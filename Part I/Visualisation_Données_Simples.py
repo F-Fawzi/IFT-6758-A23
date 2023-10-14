@@ -189,8 +189,7 @@ for i, team in enumerate(unique_teams):
 for shot_type, count in count_most_used_shot_type_teams.items():
     print(f"Shot Type: {shot_type}, Number of Teams with Most Used Type: {count}")
 
-#Réponse pour la question 1 de la partie visualisation des données : Il est facile avec les graphiques par équipe de voir que le tir le plus effectué est le 'Wirst Shot' et c'est le cas pour toutes les équipes. Pour ce qui est du tir le plus efficace en terme de tirs qui occasionnent le plus de but nous avons deux types de tirs qui se démarquent : le 'Deflected' qui est le meilleur pour 13 équipes et le 'Tip-In' qui est le meilleur pour 12 équipes. 
-Nous avons choici le bar plot justement parce qu'il est facile de voir en un seul coup d'oeil pour chaque équipe quels sont les tirs les plus utilisés et l'efficacité de chacun des types de tirs pour marquer des buts. 
+#Réponse pour la question 1 de la partie visualisation des données : Il est facile avec les graphiques par équipe de voir que le tir le plus effectué est le 'Wirst Shot' et c'est le cas pour toutes les équipes. Pour ce qui est du tir le plus efficace en terme de tirs qui occasionnent le plus de but nous avons deux types de tirs qui se démarquent : le 'Deflected' qui est le meilleur pour 13 équipes et le 'Tip-In' qui est le meilleur pour 12 équipes. Nous avons choici le bar plot justement parce qu'il est facile de voir en un seul coup d'oeil pour chaque équipe quels sont les tirs les plus utilisés et l'efficacité de chacun des types de tirs pour marquer des buts. 
 
 #Looking for average positive and negative x.coordinates for wrap-around shots which is the type of shot to be closest to goal line 
 # Filter for 'tip-in' shots with positive coordinates.x
@@ -325,3 +324,5 @@ sns.set_style("whitegrid")
 sns.set_context("talk")
 
 plt.show()
+
+#Réponse partie 3 : En général, plus un tir est effectué près du filet, plus il a de chance d'être efficace. Il semble y avoir une erreur dans le data set car c'est un tir normalement effectué près du gardien en 'rebond' sur un tir précédant normalement et ne serait très peu probablement effectué à 40-60 pieds du filet. De façon évidente, les tirs deflected sont les plus efficaces. Il est normal de penser ceci car cela veut dire que le tir a été dévié et a changé de trajectoire entre le tir et le filet souvent par un joueur postionné devant le gardien lui blocant donc également la vue. Après les tirs de type deflected, les tirs en général les plus efficace sont les slap shot et les snap shot qui sont efficaces sur une distance plus grande de par la force du tir comparé aux autres types de tirs. 
