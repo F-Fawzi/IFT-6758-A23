@@ -4,16 +4,12 @@ import json
 import pandas as pd
 from pandas import json_normalize
 
-# Define a regular expression pattern to match filenames
-
-# Initialize an empty DataFrame to store the combined data
 
 allplays_path=['liveData', 'plays', 'allPlays']
 players_path=['liveData', 'plays', 'allPlays', 'players']
 
 
-
-def clean_data(year_folders, start_year, end_year): 
+def fetch_data(year_folders, start_year, end_year): 
     start_year-=1
 
     # Iterate through the files in the directory
@@ -50,9 +46,8 @@ def clean_data(year_folders, start_year, end_year):
                 for key in allplays_path:
                     nested_data = nested_data.get(key, {})
                 
-                
                 for play in nested_data:
-                    #print(play)
+           
                     try :
                         scorer=play["players"][0]
                         goalie=play["players"][-1]
@@ -61,10 +56,8 @@ def clean_data(year_folders, start_year, end_year):
                         goalie=json_normalize(goalie)
                         goalie=goalie.add_suffix('_goalie')
                         player_col=pd.concat([scorer,goalie], axis=1)
-                        ##print(player_col.columns)
+              
                         if play["result"]["eventTypeId"]=="SHOT" or play["result"]["eventTypeId"]=="GOAL":
-
-                            #print(play["result"]["eventTypeId"])
 
                             df=json_normalize(play)
                             df=pd.concat([player_col,df], axis=1)
@@ -84,7 +77,5 @@ def clean_data(year_folders, start_year, end_year):
 
 if __name__ == "__main__":
 
-    year_dir = "/Users/ceciliaacosta/Desktop/nhl_data" # Répertoire de stockage des données
-
+    year_dir = "/Users/ceciliaacosta/IFT-DATASCIENCE/nhl_data" # Répertoire de stockage des données
     fetch_data(year_dir, start_year=2016, end_year=2021)
-
