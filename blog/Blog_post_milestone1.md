@@ -322,6 +322,8 @@ Voici un example des premières lignes du fichier CSV de la saison 2016-2017:
 Au Hockey, les avantages numériques ou désavantages sont déterminés par les pénalités qui sont effectives pour certaines périodes de temps. C’est possible de trouver l’information sur la force réelle, en 
 Dans tous les jeux (“allPlays”) on peut retrouver le type d’événement “PENALTY” donné dans “eventTypeId” sous la clé “result” de l'événement en question. Ce type d’événement indique qu’il y aura un joueur de moins dans une équipe durant les 2, 5 ou 10 prochaines minutes (dépendamment de la gravité de la pénalité). On trouve l’information dans “result”: “penaltyMinutes” du .json file pour la partie qui nous intéresse. 
 
+Dans tous les jeux (“allPlays”) on peut retrouver le type d’événement “PENALTY” donné dans “eventTypeId” sous la clé “result” de l'événement en question. Ce type d’événement indique qu’il y aura un joueur de moins dans une équipe durant les 2, 5 ou 10 prochaines minutes (dépendamment de la gravité de la pénalité). On trouve l’information dans “result”: “penaltyMinutes” du .json file pour la partie qui nous intéresse. 
+
 Ainsi, on créer une nouvelle colonne à notre DataFrame nommée “force.réelle” où nous avons le nombre de joueurs pour chaque équipe, et les valeurs sont une liste de deux éléments. Tous les événements commencent avec une valeur par défaut de [5,5]. Le premier élément représente le nombre de joueurs sur la glace de l’équipe qui reçoit et le deuxième celui qui visite. 
 Pour trouver le temps exact où la pénalité est effective, nous devons trouver l’événement de type “FACEOFF” qui suit l’événement de pénalité. Il faut tenir en compte que l’événement “FACEOFF” ne suit pas toujours immédiatement la pénalité. 
 
@@ -345,17 +347,18 @@ Finalement, grâce à l’information “date.Time” de l’événement “FACE
 
 ## Partie 4 - Simples Visualisations
 **Réponse 4.1**<br>
-![Q1](_assets/Q1_visualisationSimple.png)
+![Q1](_assets/Q1_visualisationSimple.png "Fig 1: Histogrammes des tirs (bleu) et buts (rouge) par type de tir pendant la saison 2018-2019. Les pourcentages en haut de chaque barres représentent le pourcentage de buts par rapport au nombre de tirs pour chaque type de tir.")
 
+Il est facile avec les graphiques par équipe de voir que le tir le plus effectué est le 'Wrist Shot' et c'est le cas pour toutes les équipes. Pour ce qui est du tir le plus efficace en terme de tirs qui occasionnent le plus de but nous avons deux types de tirs qui se démarquent : le 'Deflected' qui est le meilleur pour 13 équipes et le 'Tip-In' qui est le meilleur pour 12 équipes. Nous avons choisi le bar plot justement parce qu'il est facile de voir en un seul coup d'œil pour chaque équipe quels sont les tirs les plus utilisés et l'efficacité de chacun des types de tirs pour marquer des buts.
 
 **Réponse 4.2**<br>
-![Q2]()
-
+![Q2](_assets/graph_final.png "Fig 4:")
 
 
 **Réponse 4.3**<br>
-![Q3](_assets/heatmap.png)
+![Q3](_assets/heatmap.png "Fig 3: Heatmap")
 
+En général, plus un tir est effectué près du filet, plus il a de chance d'être efficace. Il semble y avoir une erreur dans le data set car c'est un tir normalement effectué près du gardien en 'rebond' sur un tir précédant normalement et ne serait très peu probablement effectué à 40-60 pieds du filet. De façon évidente, les tirs “deflected" sont les plus efficaces. Il est normal de penser ceci car cela veut dire que le tir a été dévié et a changé de trajectoire entre le tir et le filet souvent par un joueur positionné devant le gardien lui bloquant donc également la vue. Après les tirs de type “deflected”, les tirs en général les plus efficaces sont les “Slap Shot” et les “snap shot” qui sont efficaces sur une distance plus grande de par la force du tir comparé aux autres types de tirs.
 
 ## Partie 5 - Visualisations avancées
 
@@ -368,9 +371,7 @@ Finalement, grâce à l’information “date.Time” de l’événement “FACE
 Furthermore, we are providing our HTML plot for your reference:
 <iframe src="https://nhlhockeyapp.onrender.com/" title="Advanced Visualizations - Shot Maps" width="990" height="620"> </iframe>
 
-Here is a concise summary of the logs when we deployed our application on Render:
 
-![Deployment Logs](../_assets/images/Deploy_logs.png)
 
 **Réponse 5.2 - Plot interpretation**<br>
 
@@ -378,13 +379,14 @@ Les graphiques de zones offensives en équipe peuvent être utilisés pour obten
 
 **Réponse 5.3**<br>
 
-![ColoradoAvalanche1](_assets/ColoradoAvale1.png)
-![ColoradoAvalanche2](_assets/ColoradoAvale2.png)
-![ColoradoAvalanche3](_assets/ColoradoAvale3.png)
+
+![ColoradoAvalanche1](_assets/col2016final.png)
+
 En regardant la carte de tirs de 2016-2017 de l’Avalanche du Colorado qui était dernier au classement de la conférence de l’Ouest, on se rend compte que comparé aux autres équipes de la ligue nationale, ils tiraient moins de la région près du but, ni du centre de la glace entre les deux cercles de mise au jeu. Les tirs venaient plus de la ligne bleu offensive témoignant en quelque sorte d’une difficulté de l’équipe à pénétrer en zone offensive et d’effectuer des tirs rapprochés, qui comme nous l’avons vu précédemment, sont les tirs les plus dangereux en terme de chance de marquer. 
 
+![ColoradoAvalanche2](_assets/col2021final.png)
+
 En regardant la carte de tir de 2020-2021, une année où l’Avalanche du Colorado était au sommet du classement, il est possible d’identifier une augmentation comparé aux autres équipes des tirs au centre de la glace. En fait, excepté devant le filet, il semble que l’Avalanche tire plus près du but, plus au centre et également plus de la ligne bleue. Comme nous l’avons vu auparavant, les tirs déviés (provenant d’une certaine distance du but) et les tirs effectués les plus près du filet adverse sont les plus dangereux. Le fait que la zone près du gardien soit moins utilisée par l’Avalanche comparé aux autres peut s’expliquer par le fait un probable style de jeu où on favorise les tirs déviés et les chances de marquer par tirs au centre de la patinoire et que si leurs tirs sont plus efficaces, il y a moins de rebonds, donc moins de tirs à proximité. 
-es/2020_21_Colorado_Avalanche_Team.png)
 
 
 
