@@ -1,0 +1,9 @@
+numpy
+pandas
+scipy
+jupyterlab
+matplotlib
+seaborn
+dash
+python-dateutil
+plotly
