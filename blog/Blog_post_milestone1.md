@@ -5,7 +5,8 @@ title: Milestone 1
 
 ## Partie 1: Acquisition des données
 
-**Download NHL Data**
+**Tutoriel pour l'acquisition des données**<br>
+
 L'API NHL Stats permet d'accéder à une multitude de données, notamment les calendriers des matchs, les statistiques des joueurs et les informations sur le jeu. Dans ce tutoriel, nous nous intéressons aux données play-by-play, qui comprennent des informations détaillées sur les événements pour chaque match de la NHL pour la saison régulière et la saison éliminatoire de l'année 2016-17 jusqu'à la saison 2020-21.
 
 Nous allons créer une classe appelée NHLPBPDownloader pour gérer le processus de téléchargement des données. Voici comment l'initialiser :
@@ -124,9 +125,9 @@ if __name__ == "__main__":
         # Téléchargez les données pour la saison en cours
         season_data = downloader.download_season_data(season)
 ```
-![widget](../_assets/dir.png)
-![widget](../_assets/Structure_dir.png)
-![widget](../_assets/file_structure.png)
+![widget](_assets/dir.png)
+![widget](_assets/Structure_dir.png)
+![widget](_assets/file_structure.png)
 
 ## Partie 2: Outil de débogage interactif
 
@@ -134,7 +135,7 @@ Nous avons ensuite nettoyé les données, afin de les transformées en pandas Da
 
 Voici l'image de sortie générée à l'aide de l'outil interactif qui affiche la sortie de l'outil pour les choix suivants : "Type de match" ("regular") ; "Saison" ("2016") ; et pour "ID du match" ("0001"). Elle affiche également les statistiques pertinentes pour les options choisies.
 
-![widget](../_assets/widget.png)
+![widget](_assets/Screen Shot 2023-10-17 at 10.31.42 AM.png.png)
 
 Le code est ci-dessous :
 
@@ -306,7 +307,7 @@ display(season_dropdown, game_id_slider, event_id_slider)
 ## Partie 3 - Nettoyage des données
 
 
-**Réponse 4.1**<br>
+**Réponse 3.1: De dictionnaires .JSON à Pandas DataFrame .csv**<br>
 
 
 Nous avons ensuite nettoyé les données, afin de les transformées en pandas DataFrame, et enregistrer les données dans un fichier CSV. Nous travaillons donc avec un fichier CSV par saison.
@@ -316,7 +317,7 @@ Voici un example des premières lignes du fichier CSV de la saison 2016-2017:
 ![dataframe_example](_assets/dataframe_example.png)
 
 
-**Réponse 4.2**<br>
+**Réponse 3.2: Comment pourrait-on obtenir le nombre réel de joueurs sur la glace lors d'un tir?**<br>
 
 Au Hockey, les avantages numériques ou désavantages sont déterminés par les pénalités qui sont effectives pour certaines périodes de temps. C’est possible de trouver l’information sur la force réelle, en 
 Dans tous les jeux (“allPlays”) on peut retrouver le type d’événement “PENALTY” donné dans “eventTypeId” sous la clé “result” de l'événement en question. Ce type d’événement indique qu’il y aura un joueur de moins dans une équipe durant les 2, 5 ou 10 prochaines minutes (dépendamment de la gravité de la pénalité). On trouve l’information dans “result”: “penaltyMinutes” du .json file pour la partie qui nous intéresse. 
@@ -327,7 +328,7 @@ Pour trouver le temps exact où la pénalité est effective, nous devons trouver
 Finalement, grâce à l’information “date.Time” de l’événement “FACEOFF”, on peut déterminer tous les tirs et buts qui se trouvent dans l'intervalle de temps où une pénalité est en cours . Il faudrait utiliser le module datetime et timedelta de la librairie datetime. 
 
 
-**Réponse 4.3**<br>
+**Réponse 3.3: Autres données à explorer**<br>
 
 À partir des données disponibles, il est possible d’envisager plusieurs analyses supplémentaires qui seront décrites dans cette section du blog pour vous inspirer pour vos analyses personnelles. En voici une liste:
 
@@ -342,45 +343,21 @@ Finalement, grâce à l’information “date.Time” de l’événement “FACE
 *Faiblesse défensive en infériorité numérique*: Tout comme pour la prédilection de technique offensive en supériorité numérique, nous pouvons utiliser notre nouvelle colonne ‘force.réelle’ qui contient l’information sur la quantité de joueurs de chaque équipe sur la glace, il est possible d’identifier tous les ‘result.eventTypeId’ de type == 'Shot’ et ‘Goal’ et de regarder les coordonnées en x et y sur la patinoire avec les colonnes respectives. Il sera donc possible d’effectuer des analyses de densité pour établir les régions de tirs et de buts contre chaque équipe lorsqu’elle est en infériorité numérique. Ceci permettra d’identifier les zones plus vulnérables défensivement de chaque équipe en infériorité numérique en montrant les zones d’où proviennent les tirs et les buts. 
 
 
-## Partie 5 - Simples Visualisations
-**Réponse 5.1**<br>
-
+## Partie 4 - Simples Visualisations
+**Réponse 4.1**<br>
 ![Q1](_assets/Q1_visualisationSimple.png)
 
 
-*Analyse* 
-
-
-
-**Réponse 5.2**<br>
+**Réponse 4.2**<br>
 ![Q2]()
 
 
 
-
-**Réponse 5.3**<br>
-![Simple-viz-3](../_assets/image-7.png)
-
-
-## Partie 6 - Visualisations avancées
-
-### Advanced Visualization Notes:
+**Réponse 4.3**<br>
+![Q3](_assets/heatmap.png)
 
 
-#### Analysis Assumptions 
-
-
-```python
-
-```
-
-```python
-
-```
-
-<img src="../../data/excess_shot_rate_example.png" alt="example" width="1000"/>
-
-#### How a single figure is plotted? 
+## Partie 5 - Visualisations avancées
 
 
 **5.1 - 4 plot offensive zone plots visualization**
@@ -395,14 +372,15 @@ Here is a concise summary of the logs when we deployed our application on Render
 
 ![Deployment Logs](../_assets/images/Deploy_logs.png)
 
-**5.2 - Plot interpretation**
+**Réponse 5.2 - Plot interpretation**<br>
 
+Les graphiques de zones offensives en équipe peuvent être utilisés pour obtenir beaucoup d'informations en un coup d'œil sur les stratégies offensives d’une équipe comparé au reste de la ligue nationale. En comparant avec les autres équipes de la ligue, il est possible de voir à quel point une équipe diffère de par ses stratégies offensives en mettant en évidence les zones d’où proviennent le plus de tirs et permet aussi d’identifier en quelque sorte les stratégies offensives de chaque équipe (favorise les tirs de la ligne bleue vs tirs rapprochés seulement). D’un autre point de vue, elle permet également de reconnaître pour chaque équipe des régions de la glace moins utilisée qui pourrait être de l’information pertinente si on désire faire de nouvelles stratégies offensives. Elle permet également de comparer la tendance chez les équipes ayant du succès dans la saison avec celle chez les équipes au fond du classement pour avoir une idée de la tendance des stratégies offensives les plus payantes dans la saison actuelle.
 
 **Réponse 5.3**<br>
 
-![Colorado Avalanche1](../_assets/ColoradoAvale1.png)
-![Colorado Avalanche2](../_assets/ColoradoAvale2.png)
-![Colorado Avalanche3](../_assets/ColoradoAvale3.png)
+![ColoradoAvalanche1](_assets/ColoradoAvale1.png)
+![ColoradoAvalanche2](_assets/ColoradoAvale2.png)
+![ColoradoAvalanche3](_assets/ColoradoAvale3.png)
 En regardant la carte de tirs de 2016-2017 de l’Avalanche du Colorado qui était dernier au classement de la conférence de l’Ouest, on se rend compte que comparé aux autres équipes de la ligue nationale, ils tiraient moins de la région près du but, ni du centre de la glace entre les deux cercles de mise au jeu. Les tirs venaient plus de la ligne bleu offensive témoignant en quelque sorte d’une difficulté de l’équipe à pénétrer en zone offensive et d’effectuer des tirs rapprochés, qui comme nous l’avons vu précédemment, sont les tirs les plus dangereux en terme de chance de marquer. 
 
 En regardant la carte de tir de 2020-2021, une année où l’Avalanche du Colorado était au sommet du classement, il est possible d’identifier une augmentation comparé aux autres équipes des tirs au centre de la glace. En fait, excepté devant le filet, il semble que l’Avalanche tire plus près du but, plus au centre et également plus de la ligne bleue. Comme nous l’avons vu auparavant, les tirs déviés (provenant d’une certaine distance du but) et les tirs effectués les plus près du filet adverse sont les plus dangereux. Le fait que la zone près du gardien soit moins utilisée par l’Avalanche comparé aux autres peut s’expliquer par le fait un probable style de jeu où on favorise les tirs déviés et les chances de marquer par tirs au centre de la patinoire et que si leurs tirs sont plus efficaces, il y a moins de rebonds, donc moins de tirs à proximité. 
@@ -416,15 +394,16 @@ En comparant ici l’une des pires équipes de la ligue nationale dans les derni
 uffalo Sabres and Tampa Bay Lightning**
 
 
-Graphs depicting the performance of the Tampa Bay Lightning in the seasons 2018-19, 2019-20, and 2020-21:-
+Cartes montrant la différence du taux de tirs du Lightning de Tampa Bay par rapport à la moyenne de la ligue dans les saisons 2018-19, 2019-20, et 2020-21:
 
-![Tampa Bay Lightning1](../_assets/images/2018_19_Tampa_Bay_Lightning.png)
-![Tampa Bay Lightning2](../_assets/images/2019_20_Tampa_Bay_Ligtning.png)
-![Tampa Bay Lightning3](../_assets/images/2020_21_Tampa_Bay_Lightning.png)
+![TampaBayLightning1](_assets/Tampa2018.png)
+![TampaBayLightning2](_assets/Tampa2019.png)
+![TampaBayLightning3](_assets/Tampa2020.png)
 
-Plots illustrating the performance of the Buffalo Sabres in the 2018-19, 2019-20, and 2020-21 seasons:-
 
-![Buffalo Sabres1](../_assets/images/2018_19_Buffalo_Sabres_Team.png)
-![Buffalo Sabres2](../_assets/images/2019_20_Buffalo_Sabres_Team.png)
-![Buffalo Sabres3](../_assets/images/2020_21_Buffalo_Sabres_Team.png)
+Cartes montrant la différence du taux de tirs des Sabres de Buffalo par rapport à la moyenne de la ligue  2018-19, 2019-20, et 2020-21:
+
+![BuffaloSabres1](_assets/Buffalo2018.png)
+![BuffaloSabres2](_assets/Buffalo2019.png)
+![BuffaloSabres3](_assets/Buffalo2020.png)
 
