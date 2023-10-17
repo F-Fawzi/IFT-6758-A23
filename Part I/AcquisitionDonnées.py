@@ -5,10 +5,31 @@ import pandas as pd
 
 class NHLPBPDownloader:
     def __init__(self, data_dir):
+        """
+        Initializes an instance of NHLPBPDownloader.
+
+        Args:
+            data_dir (str): The directory where data will be stored.
+
+        Attributes:
+            base_url (str): The base URL for NHL data API.
+            data_dir (str): The directory where data will be stored.
+
+        """
         self.base_url = "https://statsapi.web.nhl.com/api/v1"
         self.data_dir = data_dir
     
     def download_season_data(self, season):
+         """
+        Downloads and structures NHL play-by-play data for a given season.
+
+        Args:
+            season (str): The NHL season in the format "YYYYYYYY" (e.g., "20162017").
+
+        Returns:
+            None: Data is downloaded and stored in the specified directory.
+
+        """
         season_dir = os.path.join(self.data_dir, str(season))
         os.makedirs(season_dir, exist_ok=True)
         # Vérifiez si les données existent localement
