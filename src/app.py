@@ -51,10 +51,10 @@ def excess_for_team(teamdf:pd.DataFrame, acrossteam:pd.DataFrame):
     teamdf['excess_shots']=teamdf['coord_rate_shots']-acrossteam['coord_rate_shots']
     return teamdf
 
-df = pd.read_csv("data/Data.csv")
+df = pd.read_csv("../datasets/Data.csv")
 data=df.copy()
 # Sample ice rink image (replace with your image)
-ice_rink_image_path = 'data/nhl_rinkk.png'  # Replace with your ice rink image
+ice_rink_image_path = '../datasets/left_half.png'  # Replace with your ice rink image
 
 
 # Load the ice rink image
