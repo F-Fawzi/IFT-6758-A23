@@ -135,7 +135,7 @@ Nous avons ensuite nettoyé les données, afin de les transformées en pandas Da
 
 Voici l'image de sortie générée à l'aide de l'outil interactif qui affiche la sortie de l'outil pour les choix suivants : "Type de match" ("regular") ; "Saison" ("2016") ; et pour "ID du match" ("0001"). Elle affiche également les statistiques pertinentes pour les options choisies.
 
-![widget](_assets/Screen Shot 2023-10-17 at 10.31.42 AM.png.png)
+![widget](_assets/Screen Shot 2023-10-17 at 10.31.42 AM.png)
 
 Le code est ci-dessous :
 
