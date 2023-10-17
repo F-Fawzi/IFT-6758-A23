@@ -10,7 +10,7 @@ players_path=['liveData', 'plays', 'allPlays', 'players']
 
 
 def fetch_data(year_folders, start_year, end_year): 
-     """
+    """
     Fetches and structures NHL play-by-play data from JSON files for the specified years and saves it as CSV.
 
     Args:

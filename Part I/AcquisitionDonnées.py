@@ -20,7 +20,7 @@ class NHLPBPDownloader:
         self.data_dir = data_dir
     
     def download_season_data(self, season):
-         """
+        """
         Downloads and structures NHL play-by-play data for a given season.
 
         Args:
