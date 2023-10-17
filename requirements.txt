@@ -7,3 +7,4 @@ seaborn
 dash
 python-dateutil
 plotly
+gunicorn==19.7.1
