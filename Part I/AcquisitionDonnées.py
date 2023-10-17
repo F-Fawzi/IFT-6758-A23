@@ -80,4 +80,3 @@ if __name__ == "__main__":
         season = f"{year}{year + 1}"
         # Téléchargez les données pour la saison en cours
         season_data = downloader.download_season_data(season)
-    #downloader.download_season_data(20162017)
