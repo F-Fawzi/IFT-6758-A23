@@ -13,17 +13,8 @@ Projet science des données de la LNH  « play-by-play » : De manière généra
 ## Export visualisation HTML  
 Dash est un package Python Dashboard open source de plot.ly. Il est assez facile à utiliser et contient de nombreux composants permettant de créer des graphiques et des diagrammes magnifiques et informatifs. Afin de visualiser notre visualisation avancées nous avons utiliser Gunicorn pour le déploiement dans un environnement de production.   Vous pouvez voir la structure de dossier a respecter :  
 * src : dossier qui contient l'application app.
-* datasets : les données nécessaires pour l'exécution de l'app.  
-Puis, allez sur votre Render, sélectionnez un webservice donnez un nom à votre service, cela fera partie de votre URL publique et vérifiez les paramètres, spécialement la commande run.  
-
-
-
-
-
-
-
-
-
+* datasets : les données nécessaires pour l'exécution de l'app.    
+Puis, allez sur votre Render, sélectionnez un webservice donnez un nom à votre service, cela fera partie de votre URL publique et vérifiez les paramètres, spécialement la commande run.    
 
 
 
@@ -32,4 +23,6 @@ Puis, allez sur votre Render, sélectionnez un webservice donnez un nom à votre
 
 
 # Références : 
-https://www.youtube.com/watch?v=OBGaCULCZzg&ab_channel=RajKapadia
+https://www.youtube.com/watch?v=OBGaCULCZzg&ab_channel=RajKapadia  
+https://plotly.com/python/interactive-html-export/  
+https://fizzy.cc/deploy-dash-on-server/  
