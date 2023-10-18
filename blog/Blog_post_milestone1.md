@@ -135,7 +135,7 @@ Nous avons ensuite nettoyé les données, afin de les transformées en pandas Da
 
 Voici l'image de sortie générée à l'aide de l'outil interactif qui affiche la sortie de l'outil pour les choix suivants : "Type de match" ("regular") ; "Saison" ("2016") ; et pour "ID du match" ("0001"). Elle affiche également les statistiques pertinentes pour les options choisies.
 
-![widget](_assets/Screen Shot 2023-10-17 at 10.31.42 AM.png)
+![widget](_assets/widget_image.png)
 
 Le code est ci-dessous :
 
@@ -156,7 +156,7 @@ from ipywidgets import interact, interactive, fixed, interact_manual
 #Folder of a given season 
 file_path='/Users/ceciliaacosta/IFT-DATASCIENCE/nhl_data/20172018' #Enter the path to the folder of the season you want to analyze
 #Path to the rink image
-rink_image_path='/Users/ceciliaacosta/IFT-DATASCIENCE/MILESTONE1_local/nhl_rink.png' #Enter the path to the rink image
+rink_image_path='nhl_rink.png' #Enter the path to the rink image
 year=file_path[-8:-4]
 
 # Get the total number and the ID's to use in the slider (LAST FOUR DIGITS) of regular season and playoff games
@@ -352,8 +352,11 @@ Finalement, grâce à l’information “date.Time” de l’événement “FACE
 Il est facile avec les graphiques par équipe de voir que le tir le plus effectué est le 'Wrist Shot' et c'est le cas pour toutes les équipes. Pour ce qui est du tir le plus efficace en terme de tirs qui occasionnent le plus de but nous avons deux types de tirs qui se démarquent : le 'Deflected' qui est le meilleur pour 13 équipes et le 'Tip-In' qui est le meilleur pour 12 équipes. Nous avons choisi le bar plot justement parce qu'il est facile de voir en un seul coup d'œil pour chaque équipe quels sont les tirs les plus utilisés et l'efficacité de chacun des types de tirs pour marquer des buts.
 
 **Réponse 4.2**<br>
-![Q2](_assets/graph_final.png "Fig 4:")
+![Q2](_assets/graph_final1.png "Fig 2: Graphique du taux moyen de réussite par intervalle de distance pour les saisons 2018-2019, 2019-2020 et 2020-2021. Les données sont présentées en taux de réussite des tirs au buts.")
 
+En regardant le graphique du taux moyen de réussite des tirs au buts pour les saisons 2018-2019, 2019-2020 et 2020-2021, il est possible d’observer une tendance générale avec peu de changements dans les dernières années: plus les tirs sont effectués près du filet, plus la chance de marquer est grande et plus on s’éloigne, plus les chances diminuent. Nous avons décidé de retirer les buts dans les filets déserts parce qu’ils causaient du bruit selon nous dans les données, surtout dans les données de tirs à distance. Comme ils apportent peu d’informations pertinentes dans la dangerosité des tirs, nous les avons retirés. 
+
+Nous avons choisi ce type de graphique parce qu’il donne beaucoup d'informations en un seul coup d'œil et permet de voir la tendance sur les différentes saisons. 
 
 **Réponse 4.3**<br>
 ![Q3](_assets/heatmap.png "Fig 3: Heatmap")
@@ -363,28 +366,29 @@ En général, plus un tir est effectué près du filet, plus il a de chance d'ê
 ## Partie 5 - Visualisations avancées
 
 
-**5.1 - 4 plot offensive zone plots visualization**
+**5.1 - Graphique interactif pour chaque saison de 2016-17 à 2020-2021**
 
+Nous avons créer un graphique interactif qui permettra de visualiser les cartes de tirs de chaque équipe pour chaque saison de 2016-17 à 2020-2021. Il est possible de sélectionner l’équipe désirée dans le menu déroulant et la saison désirée dans le menu déroulant. 
 
 [Advanced Visualization Shot Map Plot](https://nhlhockeyapp.onrender.com/)
 
-Furthermore, we are providing our HTML plot for your reference:
+De plus, voici le HTML pour votre référence:
 <iframe src="https://nhlhockeyapp.onrender.com/" title="Advanced Visualizations - Shot Maps" width="990" height="620"> </iframe>
 
 
 
-**Réponse 5.2 - Plot interpretation**<br>
+**Réponse 5.2 - Interprétation des graphiques**<br>
 
 Les graphiques de zones offensives en équipe peuvent être utilisés pour obtenir beaucoup d'informations en un coup d'œil sur les stratégies offensives d’une équipe comparé au reste de la ligue nationale. En comparant avec les autres équipes de la ligue, il est possible de voir à quel point une équipe diffère de par ses stratégies offensives en mettant en évidence les zones d’où proviennent le plus de tirs et permet aussi d’identifier en quelque sorte les stratégies offensives de chaque équipe (favorise les tirs de la ligne bleue vs tirs rapprochés seulement). D’un autre point de vue, elle permet également de reconnaître pour chaque équipe des régions de la glace moins utilisée qui pourrait être de l’information pertinente si on désire faire de nouvelles stratégies offensives. Elle permet également de comparer la tendance chez les équipes ayant du succès dans la saison avec celle chez les équipes au fond du classement pour avoir une idée de la tendance des stratégies offensives les plus payantes dans la saison actuelle.
 
 **Réponse 5.3**<br>
 
 
-![ColoradoAvalanche1](_assets/col2016final.png)
+![ColoradoAvalanche1](_assets/col2016final.png "Fig 4: Différence du taux de tir par heure en 2016-2017")
 
 En regardant la carte de tirs de 2016-2017 de l’Avalanche du Colorado qui était dernier au classement de la conférence de l’Ouest, on se rend compte que comparé aux autres équipes de la ligue nationale, ils tiraient moins de la région près du but, ni du centre de la glace entre les deux cercles de mise au jeu. Les tirs venaient plus de la ligne bleu offensive témoignant en quelque sorte d’une difficulté de l’équipe à pénétrer en zone offensive et d’effectuer des tirs rapprochés, qui comme nous l’avons vu précédemment, sont les tirs les plus dangereux en terme de chance de marquer. 
 
-![ColoradoAvalanche2](_assets/col2021final.png)
+![ColoradoAvalanche2](_assets/col2021final.png "Fig 5: Différence du taux de tir par heure en 2020-2021")
 
 En regardant la carte de tir de 2020-2021, une année où l’Avalanche du Colorado était au sommet du classement, il est possible d’identifier une augmentation comparé aux autres équipes des tirs au centre de la glace. En fait, excepté devant le filet, il semble que l’Avalanche tire plus près du but, plus au centre et également plus de la ligne bleue. Comme nous l’avons vu auparavant, les tirs déviés (provenant d’une certaine distance du but) et les tirs effectués les plus près du filet adverse sont les plus dangereux. Le fait que la zone près du gardien soit moins utilisée par l’Avalanche comparé aux autres peut s’expliquer par le fait un probable style de jeu où on favorise les tirs déviés et les chances de marquer par tirs au centre de la patinoire et que si leurs tirs sont plus efficaces, il y a moins de rebonds, donc moins de tirs à proximité. 
 
