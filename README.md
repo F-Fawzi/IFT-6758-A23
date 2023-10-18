@@ -22,14 +22,6 @@ Puis, allez sur votre Render, sélectionnez un webservice donnez un nom à votre
 
 
 
-
-
-
-
-
-
-
-
-
 # Références : 
 https://www.youtube.com/watch?v=OBGaCULCZzg&ab_channel=RajKapadia
+https://plotly.com/python/interactive-html-export/
