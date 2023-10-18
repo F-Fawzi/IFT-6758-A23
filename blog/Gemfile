@@ -2,9 +2,10 @@
 
 source "https://rubygems.org"
 
-git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+git_source(:github) { "https://github.com/F-Fawzi/IFT-6758-A23.git" }
 
 # gem "rails"
+gem "wdm",">=0.1.0"
 gem "jekyll-gist"
 gem "jekyll-sitemap"
 gem "jekyll-seo-tag" 
