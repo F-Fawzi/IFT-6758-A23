@@ -6,7 +6,9 @@ url:                 https://NhlHokeyVis.github.io
 baseurl:             'blog'
 paginate:            5
 permalink:           pretty
-index: blog/_posts/example.md
+source:              blog
+index:               blog/_posts/2023-10-17-milestone1.md
+
 
 # About/contact
 author:
