@@ -125,9 +125,9 @@ if __name__ == "__main__":
         # Téléchargez les données pour la saison en cours
         season_data = downloader.download_season_data(season)
 ```
-![widget](_assets/dir.png)
-![widget](_assets/Structure_dir.png)
-![widget](_assets/file_structure.png)
+![dir](_assets/dir.png)
+![structure](_assets/Structure_dir.png)
+![file_structure](_assets/file_structure.png)
 
 ## Partie 2: Outil de débogage interactif
 
