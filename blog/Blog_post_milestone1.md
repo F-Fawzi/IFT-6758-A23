@@ -125,9 +125,8 @@ if __name__ == "__main__":
         # Téléchargez les données pour la saison en cours
         season_data = downloader.download_season_data(season)
 ```
-![dir](_assets/dir.png)
-![structure](_assets/Structure_dir.png)
-![file_structure](_assets/file_structure.png)
+![Structure de dossier](_assets/Structuredir.png)
+![Structure des fichiers json](_assets/filestructure.png)
 
 ## Partie 2: Outil de débogage interactif
 
@@ -371,10 +370,6 @@ En général, plus un tir est effectué près du filet, plus il a de chance d'ê
 Nous avons créer un graphique interactif qui permettra de visualiser les cartes de tirs de chaque équipe pour chaque saison de 2016-17 à 2020-2021. Il est possible de sélectionner l’équipe désirée dans le menu déroulant et la saison désirée dans le menu déroulant. 
 
 [Advanced Visualization Shot Map Plot](https://nhlhockeyapp.onrender.com/)
-
-De plus, voici le HTML pour votre référence:
-<iframe src="https://nhlhockeyapp.onrender.com/" title="Advanced Visualizations - Shot Maps" width="990" height="620"> </iframe>
-
 
 
 **Réponse 5.2 - Interprétation des graphiques**<br>
