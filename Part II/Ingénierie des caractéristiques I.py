@@ -211,4 +211,220 @@ for year in range(2015, 2021):
 # Save the combined DataFrame to a new CSV file
 combined_data.to_csv("combined_data.csv", index=False)
 
+#### Après le dowload des bonnes saisons avec la technique utilisée dans la partie 1 du projet :::
 
+# Import important stuff
+import csv
+import pandas as pd
+import numpy as np 
+from scipy.spatial import distance 
+import math
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Open file
+csv_file_path = "/Users/francis-olivierbeauchamp/Desktop/nhl_data/combined_data.csv"
+
+# Open the CSV file in read mode
+with open(csv_file_path, mode='r') as file:
+    csv_reader = csv.reader(file)
+
+# Read the CSV file into a pandas DataFrame
+data = pd.read_csv(csv_file_path)
+
+# Define the coordinates of the two goals
+goal_1 = (89, 0)
+goal_2 = (-89, 0)
+
+def determine_target_goal(data):
+    team_shots = data['coordinates.x'].mean()
+    
+    # Determine the target goal based on the average coordinates.x
+    if team_shots > 0:
+        return 1  # Team primarily shoots in positive coordinates.x
+    else:
+        return 2  # Team primarily shoots in negative coordinates.x
+
+# Calculate the target goal for each period and team for every 'ID_game'
+target_goals = data.groupby(['ID_game', 'about.period', 'team.name']).apply(determine_target_goal).reset_index(name='target_goal')
+
+# Merge the target goal information with the main data
+data = data.merge(target_goals, on=['ID_game', 'about.period', 'team.name'])
+
+
+# Create a function to calculate Euclidean distance
+def calculate_distance(x, y, target_goal):
+    dx = target_goal[0] - x
+    dy = target_goal[1] - y
+    return math.sqrt(dx**2 + dy**2)
+
+# Create a function to calculate the angle in degrees relative to the goal
+def calculate_angle(x, y, target_goal):
+    if target_goal == goal_1:
+        target_x = 89
+    else:
+        target_x = -89
+    
+    dx = target_x - x
+    dy = 0 - y  
+
+    if dy == 0:
+        # For the case where the point is on the vertical line (dy is zero)
+        angle = 90  # Set to 90 degrees
+    else:
+        angle = math.degrees(math.asin(dx / math.sqrt(dx**2 + dy**2)))
+    
+    # Ensure the angle is in the range [0, 360]
+    angle -= 360 if angle > 90 else 0
+    angle = abs(angle)  # Ensure the angle is positive
+    return angle
+
+# Convert 'False' to 0, 'True' to 1, and 'NaN' to 0 in the 'result.emptyNet' column
+data["empty_net"] = data["result.emptyNet"].map({False: 0, True: 1}).fillna(0)
+
+# Calculate the Euclidean distance and angle for each shot and goal
+data["distance_to_target_goal"] = data.apply(
+    lambda row: calculate_distance(row["coordinates.x"], row["coordinates.y"], goal_1 if row["target_goal"] == 1 else goal_2), 
+    axis=1
+)
+data["angle_to_target_goal"] = data.apply(
+    lambda row: calculate_angle(row["coordinates.x"], row["coordinates.y"], goal_1 if row["target_goal"] == 1 else goal_2), 
+    axis=1
+)
+
+# Set a column for shot/goal (0 for shot, 1 for goal)
+data["shot_or_goal"] = data["result.eventTypeId"].apply(lambda x: 1 if x == "GOAL" else 0)
+
+# Create the training dataset with the desired columns
+df_combined = data[["distance_to_target_goal", "angle_to_target_goal", "shot_or_goal", "empty_net"]]
+
+# Filter data for shots and goals (excluding empty net goals as it gives a better understanding of the dynamics)
+filtered_data = data[(data["empty_net"] == 0.0)]
+
+# Set up the plot
+plt.figure(figsize=(10, 6))
+
+# Create a histogram for shots
+sns.histplot(filtered_data[filtered_data["shot_or_goal"] == 0]["distance_to_target_goal"], kde=True, color="blue", label="Shots", bins=20)
+
+# Create a histogram for goals
+sns.histplot(filtered_data[filtered_data["shot_or_goal"] == 1]["distance_to_target_goal"], kde=True, color="red", label="Goals", bins=20)
+# Set labels and title
+plt.xlabel("Distance to Target Goal")
+plt.ylabel("Count")
+plt.title("Histogram of Shots and Goals (Excluding Empty Net) by Distance")
+# Add a legend
+plt.legend()
+# Show the plot
+plt.show()
+
+# Separate data into shots and goals
+shots = data[data['shot_or_goal'] == 0]
+goals = data[data['shot_or_goal'] == 1]
+
+# Set up the plot
+plt.figure(figsize=(10, 6))
+# Create a histogram for shots and goals binned by angle using Seaborn
+sns.histplot(shots['angle_to_target_goal'], color='blue', label='Shots', kde=True)
+sns.histplot(goals['angle_to_target_goal'], color='red', label='Goals', kde=True)
+# Set labels and title
+plt.xlabel("Angle to Target Goal")
+plt.ylabel("Total Count")
+plt.title("Histogram of Events (Shots and Goals) by Angle")
+# Add a legend
+plt.legend()
+# Show the plot
+plt.show()
+
+# Create a jointplot
+sns.jointplot(x='distance_to_target_goal', y='angle_to_target_goal', data=data, kind='hist', color='blue')
+# Set labels and title
+plt.xlabel("Distance to Target Goal")
+plt.ylabel("Angle to Target Goal")
+plt.suptitle("2D Histogram of Distance and Angle")
+# Show the plot
+plt.show()
+
+# Create custom distance bins
+bins = np.arange(0, 201, 20)
+
+# Use pd.cut to assign each data point to a distance bin
+data['distance_bin'] = pd.cut(data['distance_to_target_goal'], bins=bins, right=False)
+
+# Calculate the goal rate in each distance bin
+goal_rates = data.groupby('distance_bin').apply(lambda x: (x['shot_or_goal'] == 1).mean())
+
+# Create a bar plot to compare goal rates in distance bins
+plt.figure(figsize=(10, 6))
+sns.barplot(x=goal_rates.index, y=goal_rates.values)
+plt.xlabel("Distance Bin (in meters)")
+plt.ylabel("Goal Rate")
+plt.title("Goal Rate by Distance Bin")
+plt.xticks(rotation=0)
+plt.show()
+
+# Create custom distance bins
+bins = np.arange(0, 201, 20)
+
+# Use pd.cut to assign each data point to a distance bin
+data['distance_bin'] = pd.cut(data['distance_to_target_goal'], bins=bins, right=False)
+
+# Filter data for shots and goals (excluding empty net goals as it gives a more representative understanding)
+filtered_data = data[(data["empty_net"] == 0.0)]
+
+# Calculate the goal rate in each distance bin for filtered data
+goal_rates = filtered_data.groupby('distance_bin').apply(lambda x: (x['shot_or_goal'] == 1).mean())
+
+# Create a bar plot to compare goal rates in distance bins
+plt.figure(figsize=(10, 6))
+sns.barplot(x=goal_rates.index, y=goal_rates.values)
+plt.xlabel("Distance Bin (in meters)")
+plt.ylabel("Goal Rate")
+plt.title("Goal Rate by Distance Bin (Excluding Empty Net)")
+plt.xticks(rotation=0)
+plt.show()
+
+# Create custom angle bins
+bins = np.arange(0, 100, 10)
+
+# Use pd.cut to assign each data point to an angle bin
+data['angle_bin'] = pd.cut(data['angle_to_target_goal'], bins=bins, right=False)
+
+# Calculate the goal rate in each angle bin
+goal_rates = data.groupby('angle_bin').apply(lambda x: (x['shot_or_goal'] == 1).mean())
+
+# Create a bar plot to compare goal rates in angle bins
+plt.figure(figsize=(10, 6))
+sns.barplot(x=goal_rates.index, y=goal_rates.values)
+plt.xlabel("Angle Bin (in degrees)")
+plt.ylabel("Goal Rate")
+plt.title("Goal Rate by Angle Bin")
+plt.xticks(rotation=0)
+plt.show()
+
+# Filter data for goals with empty_net == 0
+goals_empty_net_0 = data[(data['shot_or_goal'] == 1) & (data['empty_net'] == 0)]
+
+# Filter data for goals with empty_net == 1
+goals_empty_net_1 = data[(data['shot_or_goal'] == 1) & (data['empty_net'] == 1)]
+
+# Set up the plot
+plt.figure(figsize=(10, 6))
+
+# Create a histogram for goals with empty_net == 0
+sns.histplot(goals_empty_net_0["distance_to_target_goal"], kde=True, color="blue", label="Goals (Non-Empty Net)", bins=30)
+
+# Create a histogram for goals with empty_net == 1
+sns.histplot(goals_empty_net_1["distance_to_target_goal"], kde=True, color="red", label="Goals (Empty Net)", bins=30)
+
+# Set labels and title
+plt.xlabel("Distance to Target Goal (in meters)")
+plt.ylabel("Goal Count (log scale)")
+plt.title("Histogram of Goals by Distance (Empty Net vs. Non-Empty Net)")
+
+# Add a legend
+plt.legend()
+# Use a logarithmic scale on the y-axis
+plt.yscale('log')
+# Show the plot
+plt.show()
